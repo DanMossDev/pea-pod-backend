@@ -1,0 +1,35 @@
+{
+    "users": {
+        "Moss": {
+            "gender": "male",
+            "bio": "Coolest guy ever",
+            "avatar": "somehow store an image",
+            "meme": "https://www.youtube.com/shorts/qN80_7rNmcE",
+            "location": "Liverpool",
+            "interests": ["gaming", "reading", "coding", "theatre", "music"],
+            "password": "verysecret123",
+            "incoming_likes": ["Sally"],
+            "conversations": [1234, 654, 1, 97866]
+        },
+        "Sally": {
+            "gender": "female",
+            "bio": "Coolest gal ever",
+            "avatar": "somehow store an image",
+            "meme": "https://www.youtube.com/shorts/Jbnel9wB7Ik",
+            "location": "Newcastle",
+            "interests": ["gaming", "reading", "coding", "theatre", "music"],
+            "password": "alsoverysecret123",
+            "incoming_likes": [],
+            "conversations": ["1234"]
+        }
+    },
+
+    "conversations": {
+        "1234": {
+            "messages": ["hi ther", "hellooo", "how are you?", "bored"],
+            "users": ["Moss", "Sally"]
+        }
+    },
+
+    "interests": {"1": "bowling", "2": "tennis", "3": "gaming", "4": "chess"}
+}
