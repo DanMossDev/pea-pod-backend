@@ -19,7 +19,9 @@ user_update_args_arr = ["gender", "bio", "avatar", "meme", "location", "interest
 for item in user_update_args_arr:   
     user_update_args.add_argument(item, type=str, help="Please enter your" + item, required=False, location='form')
 
-
+class Default(Resource):
+    def get(self):
+        return "Welcome to Pea Pod API! For a list of end points, try requesting to /api"
 
 class User(Resource):
     def get(self, username):
@@ -57,6 +59,7 @@ class UpdateUser(Resource):
             return abort(400, message="Sorry, something went wrong...")
 
 
+api.add_resource(Default, '/')
 api.add_resource(User, '/user/<string:username>')
 api.add_resource(UserLogin, '/user/<string:username>')
 api.add_resource(UpdateUser, '/user/<string:username>/details')
