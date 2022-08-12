@@ -47,3 +47,9 @@ response = requests.patch(BASE + 'user/Bean/details', {
     "cheese": "Yes please, Gromit"
 })
 print(response.json())
+input()
+
+response = requests.patch(BASE + 'user/Bean/incoming_likes', {
+    "incoming_like": "Moss"
+})
+print(response.json())

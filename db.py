@@ -10,7 +10,8 @@ def get_user(username):
     return users_collection.find_one({"_id": username})
 
 def add_user(username, password, email):
-    return users_collection.insert_one({"_id": username, username: {"password": password, "email": email}})
+    users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": []}})
+    return "User created!"
 
 def patch_user(username, key, value):
     if key == "interests":
@@ -19,3 +20,12 @@ def patch_user(username, key, value):
     else:
         users_collection.update_one({"_id": username}, {"$set": {username + "." + key: value}})
     return "User update successful!"
+
+def add_like(username, incoming_like):
+    currentUser = users_collection.find_one({"_id": username})
+    likes = currentUser[username]["incoming_likes"]
+    if incoming_like not in likes:
+        users_collection.update_one({"_id": username}, {"$push": {username + ".incoming_likes": incoming_like}})
+        return incoming_like + " added to " + username + "'s incoming likes"
+    else:
+        return incoming_like + " has already liked " + username

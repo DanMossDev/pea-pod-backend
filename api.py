@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort
-from db import add_user, get_user, patch_user
+from db import add_user, get_user, patch_user, add_like
 
 app = Flask(__name__)
 api = Api(app) 
@@ -18,6 +18,9 @@ user_update_args = reqparse.RequestParser()
 user_update_args_arr = ["gender", "bio", "avatar", "meme", "location", "interests"]
 for item in user_update_args_arr:   
     user_update_args.add_argument(item, type=str, help="Please enter your" + item, required=False, location='form')
+
+incoming_like_args = reqparse.RequestParser()
+incoming_like_args.add_argument("incoming_like", type=str, help="Please include the username of the incoming like", required=True, location='form')
 
 class Default(Resource):
     def get(self):
@@ -37,8 +40,7 @@ class UserLogin(Resource):
         password = args['password']
         email = args['email']
         try:
-            add_user(username, password, email)
-            return "User created!"
+            return add_user(username, password, email)
         except: 
             return abort(409, message="Sorry, that username is already taken...")
 
@@ -53,16 +55,27 @@ class UpdateUser(Resource):
             for key in args:
                 if args[key] != None:
                     return patch_user(username, key, args[key]), 201
-            return "Please attach a request body containing one of: gender, bio, avatar, meme, location, interests"
+            return abort(400, message="Please attach a request body containing one of: gender, bio, avatar, meme, location, interests")
             
         except:
             return abort(400, message="Sorry, something went wrong...")
+
+class IncomingLikes(Resource):
+    def patch(self, username):
+        args = incoming_like_args.parse_args()
+        incoming_like = args['incoming_like']
+        try:
+            return add_like(username, incoming_like)
+        except:
+            return abort(400, message="Sorry, something went wrong...")
+
 
 
 api.add_resource(Default, '/')
 api.add_resource(User, '/user/<string:username>')
 api.add_resource(UserLogin, '/user/<string:username>')
 api.add_resource(UpdateUser, '/user/<string:username>/details')
+api.add_resource(IncomingLikes, '/user/<string:username>/incoming_likes')
 
 if __name__ == "__main__":
     app.run(debug=True)
