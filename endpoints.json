@@ -75,11 +75,36 @@
     },
     "Endpoint - /user/:username/incoming_likes": {
         "methods": {
+            "GET": {
+                "usage": "See all the likes a user has",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/incoming_likes')",
+                "example response": [
+                    {
+                        "name": "Morpungo", 
+                        "liked_detail": "bio", 
+                        "opening_message": "I like beans"
+                    }
+                ]
+            },
             "PATCH": {
                 "usage": "Store a 'like' on a user object, :username here is the user receiving the like, not the one sending it",
-                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/details', {incoming_like: 'Moss', liked_detail: 'bio', opening_message: 'I like beans'})",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/incoming_likes', {incoming_like: 'Moss', liked_detail: 'bio', opening_message: 'I like beans'})",
                 "example response": "Moss added to Bean's incoming likes",
-                "notes": "Only the username/_id of the incoming like is stored in the array, so to get profile details of an incoming like, use the returned array from this to make a GET request to /user/:username"
+                "notes": "Only the username/_id, liked component, and opening message of the incoming like is stored in the array, so to get profile details of an incoming like, use the returned array from this to make a GET request to /user/:username"
+            }
+        }
+    },
+    "Endpoint - /user/:username/matches": {
+        "methods": {
+            "GET": {
+                "usage": "See all the matches a user has",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/matches')",
+                "example response": ["Moss", "Sally", "xX_EdgeL0rd420_Xx"]
+            },
+            "PATCH": {
+                "usage": "Add a new match to the user, automatically removes them from 'incoming likes', too",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/matches', {new_match: 'Martin'})",
+                "example response": "Martin added to Bean's matches"
             }
         }
     }
