@@ -7,9 +7,9 @@ print("get user")
 print(response.json())
 input()
 
-response = requests.put(BASE + 'user/Bean', {
+response = requests.put(BASE + 'user/Moss', {
     "password": "Hello",
-    "email": "fakeemail@gmail.net"
+    "email": "anotherfakeemail@gmail.net"
 })
 print(response.json())
 input()
@@ -30,7 +30,7 @@ response = requests.patch(BASE + 'user/Bean/details', {
 print(response.json())
 
 response = requests.patch(BASE + 'user/Moss/details', {
-    "interests": '["gaming", "coding", "football", "reading", "foodie"]'
+    "interests": '["gaming", "coding", "rugby", "reading", "music"]'
 })
 print(response.json())
 input()

@@ -8,11 +8,12 @@ users_collection = database.get_collection('users')
 
 def get_user(username):
     user = users_collection.find_one({"_id": username})
+    if user == None: return 404
     del user[username]["password"]
     return user
 
 def add_user(username, password, email):
-    users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": []}})
+    users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": [], "matches": []}})
     return "User created!"
 
 def patch_user(username, key, value):

@@ -29,10 +29,8 @@ class Default(Resource):
 class User(Resource):
     def get(self, username):
         selected_user = get_user(username)
-        if selected_user != None:
-            return selected_user
-        else:
-            return 'Sorry, user could not be found...'
+        if selected_user == 404: abort(404, message="Sorry, that user doesn't exist...")
+        return selected_user
 
 class UserLogin(Resource):
     def put(self, username):     
@@ -42,7 +40,7 @@ class UserLogin(Resource):
         try:
             return add_user(username, password, email)
         except: 
-            return abort(409, message="Sorry, that username is already taken...")
+            return abort(409, message="Please enter one of the following: <string:bio>, <string:gender>, <string:location>, <string:interests>")
 
     def post(self, username):
         #return an auth token for the current user
