@@ -32,9 +32,10 @@ def add_like(username, incoming_like):
     else:
         return incoming_like + " has already liked " + username
 
-def get_users():
+def get_users(interest):
     arr = []
     for user in users_collection.find():
         del user[user["_id"]]["password"]
-        arr.append(user)
+        if interest == None or interest in user[user["_id"]]["interests"]:
+            arr.append(user)
     return arr

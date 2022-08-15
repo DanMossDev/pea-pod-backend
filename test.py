@@ -29,8 +29,8 @@ response = requests.patch(BASE + 'user/Bean/details', {
 })
 print(response.json())
 
-response = requests.patch(BASE + 'user/Bean/details', {
-    "interests": '["gaming", "chess", "hiking", "reading", "knitting"]'
+response = requests.patch(BASE + 'user/Moss/details', {
+    "interests": '["gaming", "coding", "football", "reading", "foodie"]'
 })
 print(response.json())
 input()
@@ -52,6 +52,14 @@ input()
 response = requests.patch(BASE + 'user/Bean/incoming_likes', {
     "incoming_like": "Moss"
 })
+print(response.json())
+input()
+
+response = requests.get(BASE + '/users?interest=gaming')
+print(response.json())
+input()
+
+response = requests.get(BASE + '/users?interest=coding')
 print(response.json())
 input()
 

@@ -71,10 +71,10 @@ class IncomingLikes(Resource):
 
 class GetUsers(Resource):
     def get(self):
-        #interest = request.args.get('interest')
-        #print(interest + "here")
+        args = request.args
+        interest = args.get('interest')
         try:
-            return get_users()
+            return get_users(interest)
         except:
             return abort(400, message="Sorry, something went wrong...")
 
