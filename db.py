@@ -40,3 +40,14 @@ def get_users(interest):
         if interest == None or interest in user[user["_id"]]["interests"]:
             arr.append(user)
     return arr
+
+def get_matches(username):
+    user = users_collection.find_one({"_id": username})
+    return user[username]["matches"]
+
+def add_match(username, new_match):
+    user = users_collection.find_one({"_id": username})
+    if new_match not in user[username]["matches"]:
+        users_collection.update_one({"_id": username}, {"$pull": {username + ".incoming_likes": {"name": new_match}}})
+        return users_collection.update_one({"_id": username}, {"$push": {username + ".matches": new_match}})
+    else: return "Sorry, that user is already a match", 400

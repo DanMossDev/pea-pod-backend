@@ -1,6 +1,6 @@
 from flask import Flask, request, send_file
 from flask_restful import Api, Resource, reqparse, abort
-from db import add_user, get_user, patch_user, add_like, get_users
+from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match
 
 app = Flask(__name__)
 api = Api(app) 
@@ -24,6 +24,10 @@ incoming_like_args_arr = ["incoming_like", "liked_detail", "opening_message"]
 for item in incoming_like_args_arr:
     incoming_like_args.add_argument(item, type=str, help="Please include the " + item, required=True, location='form')
 
+handle_match_args = reqparse.RequestParser()
+handle_match_args.add_argument("new_match", type=str, help="Please enter your new match", required=True, location='form')
+
+
 class Default(Resource):
     def get(self):
         return "Welcome to Pea Pod API! For a list of end points, try requesting to /api"
@@ -31,6 +35,15 @@ class Default(Resource):
 class Endpoints(Resource):
     def get(self):
         return send_file('./endpoints.json')
+
+class GetUsers(Resource):
+    def get(self):
+        args = request.args
+        interest = args.get('interest')
+        try:
+            return get_users(interest)
+        except:
+            return abort(400, message="Sorry, something went wrong...")
 
 class User(Resource):
     def get(self, username):
@@ -46,7 +59,7 @@ class UserLogin(Resource):
         try:
             return add_user(username, password, email)
         except: 
-            return abort(409, message="Sorry, something went wrong...")
+            return abort(409, message="Sorry, that username is taken")
 
     def post(self, username):
         #return an auth token for the current user
@@ -74,14 +87,18 @@ class IncomingLikes(Resource):
         except:
             return abort(400, message="Sorry, something went wrong...")
 
-class GetUsers(Resource):
-    def get(self):
-        args = request.args
-        interest = args.get('interest')
+class HandleMatch(Resource):
+    def get(self, username):
+        return get_matches(username)
+
+    def patch(self, username):
+        args = handle_match_args.parse_args()
+        new_match = args['new_match']
         try:
-            return get_users(interest)
+            add_match(username, new_match)
+            return new_match + " added to " + username + "'s matches", 201
         except:
-            return abort(400, message="Sorry, something went wrong...")
+            return abort(400, message="Sorry, that user is already a match")
 
 api.add_resource(Default, '/')
 api.add_resource(Endpoints, '/api')
@@ -90,6 +107,7 @@ api.add_resource(UserLogin, '/user/<string:username>')
 api.add_resource(UpdateUser, '/user/<string:username>/details')
 api.add_resource(IncomingLikes, '/user/<string:username>/incoming_likes')
 api.add_resource(GetUsers, '/users')
+api.add_resource(HandleMatch, '/matches/<string:username>')
 
 if __name__ == "__main__":
     app.run(debug=True)
