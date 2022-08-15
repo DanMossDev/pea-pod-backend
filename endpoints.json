@@ -77,8 +77,8 @@
         "methods": {
             "PATCH": {
                 "usage": "Store a 'like' on a user object, :username here is the user receiving the like, not the one sending it",
-                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/details', {incoming_like: 'Moss'})",
-                "example response": ["Moss", "Sally", "xX_DarkLord69_Xx"],
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/details', {incoming_like: 'Moss', liked_detail: 'bio', opening_message: 'I like beans'})",
+                "example response": "Moss added to Bean's incoming likes",
                 "notes": "Only the username/_id of the incoming like is stored in the array, so to get profile details of an incoming like, use the returned array from this to make a GET request to /user/:username"
             }
         }
