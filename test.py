@@ -35,7 +35,7 @@ response = requests.patch(BASE + 'user/Bean/details', {
 print(response.json())
 input()
 
-response = requests.put(BASE + 'user/Moss', {
+response = requests.put(BASE + 'user/Morp', {
     "password": "Hello"
 })
 print(response.json())
@@ -52,4 +52,8 @@ input()
 response = requests.patch(BASE + 'user/Bean/incoming_likes', {
     "incoming_like": "Moss"
 })
+print(response.json())
+input()
+
+response = requests.get(BASE + '/users')
 print(response.json())

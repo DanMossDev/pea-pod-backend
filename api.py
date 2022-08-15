@@ -1,6 +1,6 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort
-from db import add_user, get_user, patch_user, add_like
+from db import add_user, get_user, patch_user, add_like, get_users
 
 app = Flask(__name__)
 api = Api(app) 
@@ -69,13 +69,21 @@ class IncomingLikes(Resource):
         except:
             return abort(400, message="Sorry, something went wrong...")
 
-
+class GetUsers(Resource):
+    def get(self):
+        #interest = request.args.get('interest')
+        #print(interest + "here")
+        try:
+            return get_users()
+        except:
+            return abort(400, message="Sorry, something went wrong...")
 
 api.add_resource(Default, '/')
 api.add_resource(User, '/user/<string:username>')
 api.add_resource(UserLogin, '/user/<string:username>')
 api.add_resource(UpdateUser, '/user/<string:username>/details')
 api.add_resource(IncomingLikes, '/user/<string:username>/incoming_likes')
+api.add_resource(GetUsers, '/users')
 
 if __name__ == "__main__":
     app.run(debug=True)

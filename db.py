@@ -7,7 +7,9 @@ database = client.get_database('TestDB')
 users_collection = database.get_collection('users')
 
 def get_user(username):
-    return users_collection.find_one({"_id": username})
+    user = users_collection.find_one({"_id": username})
+    del user[username]["password"]
+    return user
 
 def add_user(username, password, email):
     users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": []}})
@@ -29,3 +31,10 @@ def add_like(username, incoming_like):
         return incoming_like + " added to " + username + "'s incoming likes"
     else:
         return incoming_like + " has already liked " + username
+
+def get_users():
+    arr = []
+    for user in users_collection.find():
+        del user[user["_id"]]["password"]
+        arr.append(user)
+    return arr
