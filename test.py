@@ -7,9 +7,9 @@ print("get user")
 print(response.json())
 input()
 
-response = requests.put(BASE + 'user/Bean', {
+response = requests.put(BASE + 'user/Moss', {
     "password": "Hello",
-    "email": "fakeemail@gmail.net"
+    "email": "anotherfakeemail@gmail.net"
 })
 print(response.json())
 input()
@@ -29,13 +29,13 @@ response = requests.patch(BASE + 'user/Bean/details', {
 })
 print(response.json())
 
-response = requests.patch(BASE + 'user/Bean/details', {
-    "interests": '["gaming", "chess", "hiking", "reading", "knitting"]'
+response = requests.patch(BASE + 'user/Moss/details', {
+    "interests": '["gaming", "coding", "rugby", "reading", "music"]'
 })
 print(response.json())
 input()
 
-response = requests.put(BASE + 'user/Moss', {
+response = requests.put(BASE + 'user/Morp', {
     "password": "Hello"
 })
 print(response.json())
@@ -52,4 +52,16 @@ input()
 response = requests.patch(BASE + 'user/Bean/incoming_likes', {
     "incoming_like": "Moss"
 })
+print(response.json())
+input()
+
+response = requests.get(BASE + '/users?interest=gaming')
+print(response.json())
+input()
+
+response = requests.get(BASE + '/users?interest=coding')
+print(response.json())
+input()
+
+response = requests.get(BASE + '/users')
 print(response.json())

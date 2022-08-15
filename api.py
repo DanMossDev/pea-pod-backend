@@ -1,6 +1,6 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort
-from db import add_user, get_user, patch_user, add_like
+from db import add_user, get_user, patch_user, add_like, get_users
 
 app = Flask(__name__)
 api = Api(app) 
@@ -29,10 +29,8 @@ class Default(Resource):
 class User(Resource):
     def get(self, username):
         selected_user = get_user(username)
-        if selected_user != None:
-            return selected_user
-        else:
-            return 'Sorry, user could not be found...'
+        if selected_user == 404: abort(404, message="Sorry, that user doesn't exist...")
+        return selected_user
 
 class UserLogin(Resource):
     def put(self, username):     
@@ -42,7 +40,7 @@ class UserLogin(Resource):
         try:
             return add_user(username, password, email)
         except: 
-            return abort(409, message="Sorry, that username is already taken...")
+            return abort(409, message="Please enter one of the following: <string:bio>, <string:gender>, <string:location>, <string:interests>")
 
     def post(self, username):
         #return an auth token for the current user
@@ -69,13 +67,21 @@ class IncomingLikes(Resource):
         except:
             return abort(400, message="Sorry, something went wrong...")
 
-
+class GetUsers(Resource):
+    def get(self):
+        args = request.args
+        interest = args.get('interest')
+        try:
+            return get_users(interest)
+        except:
+            return abort(400, message="Sorry, something went wrong...")
 
 api.add_resource(Default, '/')
 api.add_resource(User, '/user/<string:username>')
 api.add_resource(UserLogin, '/user/<string:username>')
 api.add_resource(UpdateUser, '/user/<string:username>/details')
 api.add_resource(IncomingLikes, '/user/<string:username>/incoming_likes')
+api.add_resource(GetUsers, '/users')
 
 if __name__ == "__main__":
     app.run(debug=True)
