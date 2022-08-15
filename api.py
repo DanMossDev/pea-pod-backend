@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_file
 from flask_restful import Api, Resource, reqparse, abort
 from db import add_user, get_user, patch_user, add_like, get_users
 
@@ -26,6 +26,10 @@ class Default(Resource):
     def get(self):
         return "Welcome to Pea Pod API! For a list of end points, try requesting to /api"
 
+class Endpoints(Resource):
+    def get(self):
+        return send_file('./endpoints.json')
+
 class User(Resource):
     def get(self, username):
         selected_user = get_user(username)
@@ -40,7 +44,7 @@ class UserLogin(Resource):
         try:
             return add_user(username, password, email)
         except: 
-            return abort(409, message="Please enter one of the following: <string:bio>, <string:gender>, <string:location>, <string:interests>")
+            return abort(409, message="Sorry, something went wrong...")
 
     def post(self, username):
         #return an auth token for the current user
@@ -53,10 +57,9 @@ class UpdateUser(Resource):
             for key in args:
                 if args[key] != None:
                     return patch_user(username, key, args[key]), 201
-            return abort(400, message="Please attach a request body containing one of: gender, bio, avatar, meme, location, interests")
-            
+            return abort()
         except:
-            return abort(400, message="Sorry, something went wrong...")
+            return abort(400, message="Please attach a request body containing one of: gender, bio, avatar, meme, location, interests")
 
 class IncomingLikes(Resource):
     def patch(self, username):
@@ -77,6 +80,7 @@ class GetUsers(Resource):
             return abort(400, message="Sorry, something went wrong...")
 
 api.add_resource(Default, '/')
+api.add_resource(Endpoints, '/api')
 api.add_resource(User, '/user/<string:username>')
 api.add_resource(UserLogin, '/user/<string:username>')
 api.add_resource(UpdateUser, '/user/<string:username>/details')

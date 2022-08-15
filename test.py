@@ -2,8 +2,11 @@ import requests
 
 BASE = "http://127.0.0.1:5000/"
 
+response = requests.get(BASE + '/api')
+print(response.json())
+input()
+
 response = requests.get(BASE + 'user/Bean')
-print("get user")
 print(response.json())
 input()
 
@@ -14,18 +17,18 @@ response = requests.put(BASE + 'user/Moss', {
 print(response.json())
 input()
 
-response = requests.patch(BASE + 'user/Bean/details', {
-    "bio": "Hi I am bean!!!"
+response = requests.patch(BASE + 'user/Moss/details', {
+    "bio": "Pretty much just the coolest guy ever"
 })
 print(response.json())
 
-response = requests.patch(BASE + 'user/Bean/details', {
-    "gender": "female"
+response = requests.patch(BASE + 'user/Moss/details', {
+    "gender": "male"
 })
 print(response.json())
 
-response = requests.patch(BASE + 'user/Bean/details', {
-    "location": "Norfolk"
+response = requests.patch(BASE + 'user/Moss/details', {
+    "location": "Liverpool"
 })
 print(response.json())
 

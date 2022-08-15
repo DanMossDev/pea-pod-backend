@@ -1,0 +1,86 @@
+{
+    "Endpoint - /users?interests=:interest": {
+        "methods": {
+            "PATCH": {
+                "usage": "Get all users, or get only users with a certain interest",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/users/interest=coding')",
+                "example response": [
+                    {
+                        "_id": "Bean", 
+                        "Bean": {
+                            "email": "fakeemail@gmail.net", 
+                            "incoming_likes": ["Moss"], 
+                            "matches": [], 
+                            "bio": "Hi I am bean!!!", 
+                            "gender": "female", 
+                            "location": "Norfolk", 
+                            "interests": ["gaming", "hiking", "football", "reading", "foodie"]
+                        }
+                    }, 
+                    {
+                        "_id": "Moss", 
+                        "Moss": {
+                            "email": "anotherfakeemail@gmail.net", 
+                            "incoming_likes": [], 
+                            "matches": [], 
+                            "interests": ["gaming", "coding", "rugby", "reading", "music"], 
+                            "bio": "Pretty much just the coolest guy ever", 
+                            "gender": "male", 
+                            "location": "Liverpool"
+                        }
+                    }
+                ],
+                "notes": "Only a single thing can be updated at a time, for interests a string which looks like an array/list should be passed"
+            }
+        }
+    },
+    "Endpoint - /user/:username": {
+        "methods": {
+            "GET": {
+                "usage": "Returns either the object with a matching username, or a 404 user not found. Used for accessing information about a specific user",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean')",
+                "example response": {
+                    "_id": "Bean", 
+                    "Bean": {
+                    "email": "fakeemail@gmail.net", 
+                    "incoming_likes": ["Moss"], 
+                    "matches": [], 
+                    "bio": "Hi I am bean!!!",
+                    "gender": "female", 
+                    "location": "Norfolk", 
+                    "interests": ["gaming", "hiking", "football", "reading", "foodie"]}
+                }
+            },
+            "PUT": {
+                "usage": "Creates a new user if the passed username doesn't already exist, or returns a 409",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean', body: {password: verysecret123, email: realemail@gmail.nut})",
+                "example response": "User created!"
+            },
+            "POST (under construction)": {
+                "usage": "Logging in",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean', body: {password: verysecret123})",
+                "example response": "User created!"
+            }
+        }
+    },
+    "Endpoint - /user/:username/details": {
+        "methods": {
+            "PATCH": {
+                "usage": "Update details about a specific user",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/details', {interests: '['coding', 'biking', 'go-karting']'})",
+                "example response": "User update successful!",
+                "notes": "Only a single thing can be updated at a time, for interests a string which looks like an array/list should be passed"
+            }
+        }
+    },
+    "Endpoint - /user/:username/incoming_likes": {
+        "methods": {
+            "PATCH": {
+                "usage": "Store a 'like' on a user object, :username here is the user receiving the like, not the one sending it",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/details', {incoming_like: 'Moss'})",
+                "example response": ["Moss", "Sally", "xX_DarkLord69_Xx"],
+                "notes": "Only the username/_id of the incoming like is stored in the array, so to get profile details of an incoming like, use the returned array from this to make a GET request to /user/:username"
+            }
+        }
+    }
+}
