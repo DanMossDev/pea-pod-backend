@@ -40,6 +40,10 @@ response = requests.get(BASE + '/users')
 print(response.json())
 input()
 
+user = input("Pick a user whose likes you want to see: ")
+response = requests.get(BASE + '/user/' + user + '/incoming_likes')
+print(response.json())
+
 username = input("The user you want to like: ")
 incoming_like = input("Your username: ")
 response = requests.patch(BASE + 'user/' + username + '/incoming_likes', {

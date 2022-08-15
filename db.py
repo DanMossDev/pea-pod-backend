@@ -24,6 +24,10 @@ def patch_user(username, key, value):
         users_collection.update_one({"_id": username}, {"$set": {username + "." + key: value}})
     return "User update successful!"
 
+def get_likes(username):
+    currentUser = users_collection.find_one({"_id": username})
+    return currentUser[username]["incoming_likes"]
+
 def add_like(username, incoming_like, liked_detail, opening_message):
     currentUser = users_collection.find_one({"_id": username})
     likes = currentUser[username]["incoming_likes"]

@@ -1,6 +1,6 @@
 from flask import Flask, request, send_file
 from flask_restful import Api, Resource, reqparse, abort
-from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match
+from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes
 
 app = Flask(__name__)
 api = Api(app) 
@@ -77,6 +77,11 @@ class UpdateUser(Resource):
             return abort(400, message="Please attach a request body containing one of: gender, bio, avatar, meme, location, interests")
 
 class IncomingLikes(Resource):
+    def get(self, username):
+        try:
+            return get_likes(username)
+        except:
+            return abort(400, message="Sorry, something went wrong...")
     def patch(self, username):
         args = incoming_like_args.parse_args()
         incoming_like = args['incoming_like']
