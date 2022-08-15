@@ -20,7 +20,9 @@ for item in user_update_args_arr:
     user_update_args.add_argument(item, type=str, help="Please enter your" + item, required=False, location='form')
 
 incoming_like_args = reqparse.RequestParser()
-incoming_like_args.add_argument("incoming_like", type=str, help="Please include the username of the incoming like", required=True, location='form')
+incoming_like_args_arr = ["incoming_like", "liked_detail", "opening_message"]
+for item in incoming_like_args_arr:
+    incoming_like_args.add_argument(item, type=str, help="Please include the " + item, required=True, location='form')
 
 class Default(Resource):
     def get(self):
@@ -65,8 +67,10 @@ class IncomingLikes(Resource):
     def patch(self, username):
         args = incoming_like_args.parse_args()
         incoming_like = args['incoming_like']
+        liked_detail = args['liked_detail']
+        opening_message = args['opening_message']
         try:
-            return add_like(username, incoming_like)
+            return add_like(username, incoming_like, liked_detail, opening_message)
         except:
             return abort(400, message="Sorry, something went wrong...")
 

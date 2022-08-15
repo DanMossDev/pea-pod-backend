@@ -2,10 +2,6 @@ import requests
 
 BASE = "http://127.0.0.1:5000/"
 
-response = requests.get(BASE + '/api')
-print(response.json())
-input()
-
 response = requests.get(BASE + 'user/Bean')
 print(response.json())
 input()
@@ -53,7 +49,9 @@ print(response.json())
 input()
 
 response = requests.patch(BASE + 'user/Bean/incoming_likes', {
-    "incoming_like": "Moss"
+    "incoming_like": "Moss",
+    "liked_detail": "bio",
+    "opening_message": "I like beans"
 })
 print(response.json())
 input()

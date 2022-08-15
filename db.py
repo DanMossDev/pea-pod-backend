@@ -24,11 +24,11 @@ def patch_user(username, key, value):
         users_collection.update_one({"_id": username}, {"$set": {username + "." + key: value}})
     return "User update successful!"
 
-def add_like(username, incoming_like):
+def add_like(username, incoming_like, liked_detail, opening_message):
     currentUser = users_collection.find_one({"_id": username})
     likes = currentUser[username]["incoming_likes"]
     if incoming_like not in likes:
-        users_collection.update_one({"_id": username}, {"$push": {username + ".incoming_likes": incoming_like}})
+        users_collection.update_one({"_id": username}, {"$push": {username + ".incoming_likes": {"name": incoming_like, "liked_detail": liked_detail, "opening_message": opening_message}}})
         return incoming_like + " added to " + username + "'s incoming likes"
     else:
         return incoming_like + " has already liked " + username
