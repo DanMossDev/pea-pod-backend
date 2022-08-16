@@ -1,10 +1,11 @@
 from flask import Flask, request, send_file
 from flask_restful import Api, Resource, reqparse, abort
+from flask_cors import CORS
 from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs
 
 app = Flask(__name__)
 api = Api(app) 
-
+cors = CORS(app, resorces={r'/d/*': {"origins": '*'}})
 
 user_signup_args = reqparse.RequestParser()
 user_signup_args_arr = ["password", "email"]
