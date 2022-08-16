@@ -59,7 +59,7 @@
             "POST (under construction)": {
                 "usage": "Logging in",
                 "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean', body: {password: verysecret123})",
-                "example response": "User created!"
+                "example response": "[auth token]"
             }
         }
     },
@@ -69,7 +69,8 @@
                 "usage": "Update details about a specific user",
                 "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/details', {interests: '['coding', 'biking', 'go-karting']'})",
                 "example response": "User update successful!",
-                "notes": "Only a single thing can be updated at a time, for interests a string which looks like an array/list should be passed"
+                "notes": "Only a single thing can be updated at a time, for interests a string which looks like an array/list should be passed",
+                "examples": "Any of the following can be updated: gender, bio, avatar, meme, location, interests"
             }
         }
     },
