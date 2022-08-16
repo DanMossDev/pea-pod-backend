@@ -101,7 +101,7 @@
             "GET": {
                 "usage": "See all the matches a user has",
                 "example input": "fetch('https://pea-pod-api.herokuapp.com/user/Bean/matches')",
-                "example response": ["Moss", "Sally", "xX_EdgeL0rd420_Xx"]
+                "example response": [{"name": "Moss", "avatar": "someabsurdlybigavatarstring"}, {"name": "Sally", "avatar": "someabsurdlybigavatarstring"}, {"name": "xX_Edg3L0rd_Xx", "avatar": "someabsurdlybigavatarstring"}]
             },
             "PATCH": {
                 "usage": "Add a new match to the user, automatically removes them from 'incoming likes', too",
