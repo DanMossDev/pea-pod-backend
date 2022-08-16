@@ -2,8 +2,6 @@ import json
 from pymongo import MongoClient
 import os
 
-print(os.environ.get('DBURL'))
-
 client = MongoClient(os.environ.get('DBURL'))
 
 database = client.get_database('TestDB')
