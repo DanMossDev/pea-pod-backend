@@ -1,7 +1,11 @@
 import json
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
 
-client = MongoClient('mongodb+srv://Pufferfish:Pufferfish@cluster0.pnqsntf.mongodb.net/?retryWrites=true&w=majority')
+load_dotenv('.env')
+
+client = MongoClient(os.environ.get('DBURL'))
 
 database = client.get_database('TestDB')
 users_collection = database.get_collection('users')
