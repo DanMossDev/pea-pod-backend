@@ -11,9 +11,6 @@ Created in collaboration with:
 
 ## Where is it?
 
-It's avaiable [here](https://pea-pod-api.herokuapp.com/)! Available endpoints include:
+It's avaiable [here](https://pea-pod-api.herokuapp.com/)!
 
-```
-/user/<string:username> - GET, PUT, POST (coming soon)
-/user/<string:username>/details - PATCH
-```
+For a list of endpoints, visit https://pea-pod-api.herokuapp.com/api
