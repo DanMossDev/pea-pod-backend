@@ -1,9 +1,8 @@
 import json
 from pymongo import MongoClient
 import os
-from dotenv import load_dotenv
 
-load_dotenv('.env')
+print(os.environ.get('DBURL'))
 
 client = MongoClient(os.environ.get('DBURL'))
 
