@@ -48,7 +48,7 @@ username = input("The user you want to like: ")
 incoming_like = input("Your username: ")
 response = requests.patch(BASE + 'user/' + username + '/incoming_likes', {
     "incoming_like": incoming_like,
-    "liked_detail": "bio",
-    "opening_message": "I like beans"
+    "liked_detail": "interests[4]",
+    "opening_message": "Nice shoes"
 })
 print(response.json())

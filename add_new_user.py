@@ -22,7 +22,12 @@ response = requests.patch(BASE + 'user/' + username + '/details', {
 print(response.json())
 
 response = requests.patch(BASE + 'user/' + username + '/details', {
-    "location": "Liverpool"
+    "meme": "https://www.youtube.com/watch?v=qN80_7rNmcE"
+})
+print(response.json())
+
+response = requests.patch(BASE + 'user/' + username + '/details', {
+    "location": "London"
 })
 print(response.json())
 

@@ -82,7 +82,8 @@
                     {
                         "name": "Morpungo", 
                         "liked_detail": "bio", 
-                        "opening_message": "I like beans"
+                        "opening_message": "I like beans",
+                        "notes": "liked_detail should refer to where in the database the thing they liked is stored. If it is an interest, you need to include an index to the specific interst - i.e. liked_detail: 'interests[1]'"
                     }
                 ]
             },
