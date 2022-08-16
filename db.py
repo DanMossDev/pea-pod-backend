@@ -1,6 +1,7 @@
 import json
 from pymongo import MongoClient
 import os
+from defaultavatar import default_avatar
 
 client = MongoClient(os.environ.get('DBURL'))
 
@@ -16,7 +17,7 @@ def get_user(username):
     return user
 
 def add_user(username, password, email):
-    users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": [], "matches": []}})
+    users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": [], "matches": [], "avatar": default_avatar}})
     return "User created!"
 
 def patch_user(username, key, value):
@@ -54,9 +55,10 @@ def get_matches(username):
 
 def add_match(username, new_match):
     user = users_collection.find_one({"_id": username})
+    match_avatar = users_collection.find_one({"_id": new_match})[new_match]["avatar"]
     if new_match not in user[username]["matches"]:
         users_collection.update_one({"_id": username}, {"$pull": {username + ".incoming_likes": {"name": new_match}}})
-        return users_collection.update_one({"_id": username}, {"$push": {username + ".matches": new_match}})
+        return users_collection.update_one({"_id": username}, {"$push": {username + ".matches": {"name": new_match, "avatar": match_avatar}}})
     else: return "Sorry, that user is already a match", 400
 
 def get_room_msgs(roomID):
