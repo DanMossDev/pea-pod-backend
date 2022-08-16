@@ -109,5 +109,19 @@
                 "example response": "Martin added to Bean's matches"
             }
         }
+    },
+    "Endpoint - /chat/:room_id/messages": {
+        "methods": {
+            "GET": {
+                "usage": "See all the messages in a given room",
+                "example input": "fetch('https://pea-pod-api.herokuapp.com/chat/Anakin%Padme/messages')",
+                "example response": [
+                    {"_id": "62fa930f0aead6aa119e1d74", "room_id": "Anakin%Padme", "sender": "Anakin", "msg": "I saw your ship! What are you doing out here?", "created_at": "2022-08-15T19:40:15+01:00"},
+                    {"_id": "62fa932e0aead6aa119e1d75", "room_id": "Anakin%Padme", "sender": "Padme", "msg": "I was worried about you! Obi-Wan told me terrible things", "created_at": "2022-08-15T19:40:47+01:00"},
+                    {"_id": "62fa93370aead6aa119e1d76", "room_id": "Anakin%Padme", "sender": "Anakin", "msg": "What things?", "created_at": "2022-08-15T19:40:54+01:00"},
+                    {"_id": "62fb6980ee15e9deea8be50e", "room_id": "Anakin%Padme", "sender": "Anakin", "msg": "You killed them all", "created_at": "2022-08-16T10:55:11+01:00"}
+                ]
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 from flask import Flask, request, send_file
 from flask_restful import Api, Resource, reqparse, abort
-from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes
+from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs
 
 app = Flask(__name__)
 api = Api(app) 
@@ -105,6 +105,11 @@ class HandleMatch(Resource):
         except:
             return abort(400, message="Sorry, that user is already a match")
 
+class Chat(Resource):
+    def get(self, roomID):
+        return get_room_msgs(roomID)
+
+
 api.add_resource(Default, '/')
 api.add_resource(Endpoints, '/api')
 api.add_resource(User, '/user/<string:username>')
@@ -113,6 +118,7 @@ api.add_resource(UpdateUser, '/user/<string:username>/details')
 api.add_resource(IncomingLikes, '/user/<string:username>/incoming_likes')
 api.add_resource(GetUsers, '/users')
 api.add_resource(HandleMatch, '/matches/<string:username>')
+api.add_resource(Chat, '/chat/<string:roomID>/messages')
 
 if __name__ == "__main__":
     app.run(debug=True)

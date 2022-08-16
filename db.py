@@ -5,6 +5,8 @@ client = MongoClient('mongodb+srv://Pufferfish:Pufferfish@cluster0.pnqsntf.mongo
 
 database = client.get_database('TestDB')
 users_collection = database.get_collection('users')
+chatdb = client.get_database('ChatDB')
+messages_collection = chatdb.get_collection('messages')
 
 def get_user(username):
     user = users_collection.find_one({"_id": username})
@@ -55,3 +57,10 @@ def add_match(username, new_match):
         users_collection.update_one({"_id": username}, {"$pull": {username + ".incoming_likes": {"name": new_match}}})
         return users_collection.update_one({"_id": username}, {"$push": {username + ".matches": new_match}})
     else: return "Sorry, that user is already a match", 400
+
+def get_room_msgs(roomID):
+    arr = []
+    for msg in messages_collection.find({"room_id": roomID}):
+        msg["_id"] = str(msg["_id"])
+        arr.append(msg)
+    return sorted(arr, key=lambda x: x['created_at'])
