@@ -48,7 +48,7 @@ class UserLogin(Resource):
         body = request.get_json()
         password = sha256_crypt.encrypt(body['password'])
 
-        user_login()
+        user_login(username, password)
 
 class UpdateUser(Resource):
     def patch(self, username):

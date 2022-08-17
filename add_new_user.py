@@ -4,10 +4,10 @@ BASE = "http://127.0.0.1:5000/"
 
 username = input("Enter a username: ")
 
-response = requests.put(BASE + 'user/' + username, {
+response = requests.put(BASE + 'user/' + username, data={
     "password": "Hello",
     "email": "afakeemail@gmail.net"
-})
+}, headers={'Content-Type': 'application/json; charset=utf-8'})
 print(response.json())
 
 response = requests.patch(BASE + 'user/' + username + '/details', {
