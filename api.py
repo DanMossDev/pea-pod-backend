@@ -35,7 +35,6 @@ class User(Resource):
 class UserLogin(Resource):
     def put(self, username):    
         body = request.get_json() 
-        print(body['password'])
         password = sha256_crypt.encrypt(body['password'])
         email = body['email']
 
@@ -47,6 +46,7 @@ class UserLogin(Resource):
 
     def post(self, username):
         body = request.get_json()
+        print(body['password'])
         password = sha256_crypt.encrypt(body['password'])
 
         return user_login(username, password)
