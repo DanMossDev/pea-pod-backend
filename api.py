@@ -1,6 +1,7 @@
 from flask import Flask, request, send_file
 from flask_restful import Api, Resource, reqparse, abort
 from flask_cors import CORS
+from passlib.hash import sha256_crypt
 from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs
 
 app = Flask(__name__)
@@ -34,7 +35,7 @@ class User(Resource):
 class UserLogin(Resource):
     def put(self, username):    
         body = request.get_json() 
-        password = body['password']
+        password = sha256_crypt.encrypt(body['password'])
         email = body['email']
 
         if password == None or email == None: return abort(400, message="Please supply a username and password")
