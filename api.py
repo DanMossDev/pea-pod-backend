@@ -35,8 +35,7 @@ class User(Resource):
 class UserLogin(Resource):
     def put(self, username):    
         body = request.get_json() 
-        password = body['password'].encode('utf-8')
-        password = bcrypt.hashpw(password, '')
+        password = bcrypt.hashpw(body['password'].encode(), '')
         email = body['email']
 
         if password == None or email == None: return abort(400, message="Please supply a username and password")
@@ -47,8 +46,7 @@ class UserLogin(Resource):
 
     def post(self, username):
         body = request.get_json()
-        password = body['password'].encode('utf-8')
-        password = bcrypt.hashpw(password, '')
+        password = bcrypt.hashpw(body['password'].encode(), '')
 
         return user_login(username, password)
 
