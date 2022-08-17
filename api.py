@@ -91,7 +91,7 @@ class HandleMatch(Resource):
         rejected = body['rejected']
 
         if new_match == None: return abort(400, message="Please include the match's username")
-        if rejected != None: return delete_match(username, new_match)
+        if rejected == "true": return delete_match(username, new_match)
         try:
             return add_match(username, new_match)
         except:
