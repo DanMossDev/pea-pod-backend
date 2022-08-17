@@ -20,6 +20,11 @@ def add_user(username, password, email):
     users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": [], "matches": [], "avatar": default_avatar}})
     return "User created!"
 
+def user_login(username, password):
+    user = users_collection.find_one({"_id": username})
+    if user[username]["password"] == password: return "Login successful!", 200
+    else: return "Incorrect password...", 403
+
 def patch_user(username, key, value):
     users_collection.update_one({"_id": username}, {"$set": {username + "." + key: value}})
     return "User update successful!"

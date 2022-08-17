@@ -2,7 +2,7 @@ from flask import Flask, request, send_file
 from flask_restful import Api, Resource, reqparse, abort
 from flask_cors import CORS
 from passlib.hash import sha256_crypt
-from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs
+from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs, user_login
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -45,8 +45,10 @@ class UserLogin(Resource):
             return abort(409, message="Sorry, that username is taken")
 
     def post(self, username):
-        #return an auth token for the current user
-        pass
+        body = request.get_json()
+        password = sha256_crypt.encrypt(body['password'])
+
+        user_login()
 
 class UpdateUser(Resource):
     def patch(self, username):
