@@ -60,7 +60,8 @@ def add_match(username, new_match):
     print('getting here')
 
     users_collection.update_one({"_id": username}, {"$pull": {username + ".incoming_likes": {"name": new_match}}})
-    return users_collection.update_one({"_id": username}, {"$push": {username + ".matches": {"name": new_match, "avatar": match_avatar}}})
+    users_collection.update_one({"_id": username}, {"$push": {username + ".matches": {"name": new_match, "avatar": match_avatar}}})
+    return new_match + " added to " + username + "'s matches", 201
 
 
 def get_room_msgs(roomID):
