@@ -1,4 +1,3 @@
-import json
 from pymongo import MongoClient
 import os
 from defaultavatar import default_avatar
@@ -22,7 +21,6 @@ def add_user(username, password, email):
 
 def user_login(username, password):
     user = users_collection.find_one({"_id": username})
-    print(user[username]["password"])
     print(password)
     if user[username]["password"] == password: return "Login successful!", 200
     else: return "Incorrect password...", 403
