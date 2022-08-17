@@ -17,7 +17,7 @@ def get_user(username):
     return user
 
 def add_user(username, password, email):
-    users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": [], "matches": [], "avatar": default_avatar}})
+    users_collection.insert_one({"_id": username, username: {"password": password, "email": email, "incoming_likes": [], "matches": [], "interests": [], "avatar": default_avatar}})
     return "User created!"
 
 def user_login(username, password):
