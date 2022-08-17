@@ -31,11 +31,12 @@ def get_likes(username):
 def add_like(username, incoming_like, liked_detail, opening_message):
     currentUser = users_collection.find_one({"_id": username})
     likes = currentUser[username]["incoming_likes"]
+    like_avatar = users_collection.find_one({"_id": incoming_like})[incoming_like]["avatar"]
 
     for like in likes:
         if like["name"] == incoming_like: return incoming_like + " has already liked " + username
 
-    users_collection.update_one({"_id": username}, {"$push": {username + ".incoming_likes": {"name": incoming_like, "liked_detail": liked_detail, "opening_message": opening_message}}})
+    users_collection.update_one({"_id": username}, {"$push": {username + ".incoming_likes": {"name": incoming_like, "liked_detail": liked_detail, "opening_message": opening_message, "avatar": like_avatar}}})
     return incoming_like + " added to " + username + "'s incoming likes"
 
 def get_users(interest):
