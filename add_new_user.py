@@ -1,6 +1,6 @@
 import requests
 
-BASE = "https://pea-pod-api.herokuapp.com/"
+BASE = "http://127.0.0.1:5000/"
 
 username = input("Enter a username: ")
 

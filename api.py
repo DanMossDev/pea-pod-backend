@@ -4,30 +4,8 @@ from flask_cors import CORS
 from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs
 
 app = Flask(__name__)
-api = Api(app) 
-
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
-
-user_signup_args = reqparse.RequestParser()
-user_signup_args_arr = ["password", "email"]
-for item in user_signup_args_arr:
-    user_signup_args.add_argument(item, type=str, help="Please enter " + item, required=True, location='form')
-
-user_login_args = reqparse.RequestParser()
-user_login_args.add_argument("password", type=str, help="Please enter a password", required=True, location='form')
-
-user_update_args = reqparse.RequestParser()
-user_update_args_arr = ["gender", "bio", "avatar", "meme", "location", "interests"]
-for item in user_update_args_arr:   
-    user_update_args.add_argument(item, type=str, help="Please enter your" + item, required=False, location='form')
-
-incoming_like_args = reqparse.RequestParser()
-incoming_like_args_arr = ["incoming_like", "liked_detail", "opening_message"]
-for item in incoming_like_args_arr:
-    incoming_like_args.add_argument(item, type=str, help="Please include the " + item, required=True, location='form')
-
-handle_match_args = reqparse.RequestParser()
-handle_match_args.add_argument("new_match", type=str, help="Please enter your new match", required=True, location='form')
+api = Api(app)
 
 
 class Default(Resource):
@@ -54,10 +32,12 @@ class User(Resource):
         return selected_user
 
 class UserLogin(Resource):
-    def put(self, username):     
-        args = user_signup_args.parse_args() #gets arguments off the body 
-        password = args['password']
-        email = args['email']
+    def put(self, username):    
+        body = request.get_json() 
+        password = body['password']
+        email = body['email']
+
+        if password == None or email == None: return abort(400, message="Please supply a username and password")
         try:
             return add_user(username, password, email)
         except: 
@@ -69,12 +49,15 @@ class UserLogin(Resource):
 
 class UpdateUser(Resource):
     def patch(self, username):
-        args = user_update_args.parse_args()
+        body = request.get_json()
+        args = ["bio", "gender", "avatar", "meme", "location", "interests"]
+        print(body)
         try:
             for key in args:
-                if args[key] != None:
-                    return patch_user(username, key, args[key]), 201
-            return abort()
+                if key in body:
+                    return patch_user(username, key, body[key]), 201
+            
+            return abort(400, message="Please attach a request body containing one of: gender, bio, avatar, meme, location, interests")
         except:
             return abort(400, message="Please attach a request body containing one of: gender, bio, avatar, meme, location, interests")
 
@@ -85,10 +68,12 @@ class IncomingLikes(Resource):
         except:
             return abort(400, message="Sorry, something went wrong...")
     def patch(self, username):
-        args = incoming_like_args.parse_args()
-        incoming_like = args['incoming_like']
-        liked_detail = args['liked_detail']
-        opening_message = args['opening_message']
+        body = request.get_json()
+        incoming_like = body['incoming_like']
+        liked_detail = body['liked_detail']
+        opening_message = body['opening_message']
+
+        if incoming_like == None or liked_detail == None or opening_message == None: return abort(400, message="Please include an incoming like, liked detail, and opening message")
         try:
             return add_like(username, incoming_like, liked_detail, opening_message)
         except:
@@ -99,13 +84,14 @@ class HandleMatch(Resource):
         return get_matches(username)
 
     def patch(self, username):
-        args = handle_match_args.parse_args()
-        new_match = args['new_match']
+        body = request.get_json()
+        new_match = body['new_match']
+
+        if new_match == None: return abort(400, message="Please include the match's username")
         try:
-            add_match(username, new_match)
-            return new_match + " added to " + username + "'s matches", 201
+            return add_match(username, new_match)
         except:
-            return abort(400, message="Sorry, that user is already a match")
+            return abort(400, message="Sorry, something went wrong... Is 'new_match' a real user?")
 
 class Chat(Resource):
     def get(self, roomID):
@@ -119,7 +105,7 @@ api.add_resource(UserLogin, '/user/<string:username>')
 api.add_resource(UpdateUser, '/user/<string:username>/details')
 api.add_resource(IncomingLikes, '/user/<string:username>/incoming_likes')
 api.add_resource(GetUsers, '/users')
-api.add_resource(HandleMatch, '/matches/<string:username>')
+api.add_resource(HandleMatch, '/user/<string:username>/matches')
 api.add_resource(Chat, '/chat/<string:roomID>/messages')
 
 if __name__ == "__main__":

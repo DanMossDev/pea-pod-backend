@@ -21,11 +21,7 @@ def add_user(username, password, email):
     return "User created!"
 
 def patch_user(username, key, value):
-    if key == "interests":
-        value = json.loads(value)
-        users_collection.update_one({"_id": username}, {"$set": {username + "." + key: value}})
-    else:
-        users_collection.update_one({"_id": username}, {"$set": {username + "." + key: value}})
+    users_collection.update_one({"_id": username}, {"$set": {username + "." + key: value}})
     return "User update successful!"
 
 def get_likes(username):
@@ -35,11 +31,12 @@ def get_likes(username):
 def add_like(username, incoming_like, liked_detail, opening_message):
     currentUser = users_collection.find_one({"_id": username})
     likes = currentUser[username]["incoming_likes"]
-    if incoming_like not in likes:
-        users_collection.update_one({"_id": username}, {"$push": {username + ".incoming_likes": {"name": incoming_like, "liked_detail": liked_detail, "opening_message": opening_message}}})
-        return incoming_like + " added to " + username + "'s incoming likes"
-    else:
-        return incoming_like + " has already liked " + username
+
+    for like in likes:
+        if like["name"] == incoming_like: return incoming_like + " has already liked " + username
+
+    users_collection.update_one({"_id": username}, {"$push": {username + ".incoming_likes": {"name": incoming_like, "liked_detail": liked_detail, "opening_message": opening_message}}})
+    return incoming_like + " added to " + username + "'s incoming likes"
 
 def get_users(interest):
     arr = []
@@ -56,10 +53,15 @@ def get_matches(username):
 def add_match(username, new_match):
     user = users_collection.find_one({"_id": username})
     match_avatar = users_collection.find_one({"_id": new_match})[new_match]["avatar"]
-    if new_match not in user[username]["matches"]:
-        users_collection.update_one({"_id": username}, {"$pull": {username + ".incoming_likes": {"name": new_match}}})
-        return users_collection.update_one({"_id": username}, {"$push": {username + ".matches": {"name": new_match, "avatar": match_avatar}}})
-    else: return "Sorry, that user is already a match", 400
+    
+    for match in user[username]["matches"]:
+        if match["name"] == new_match: return "Sorry, that user is already a match", 400
+
+    print('getting here')
+
+    users_collection.update_one({"_id": username}, {"$pull": {username + ".incoming_likes": {"name": new_match}}})
+    return users_collection.update_one({"_id": username}, {"$push": {username + ".matches": {"name": new_match, "avatar": match_avatar}}})
+
 
 def get_room_msgs(roomID):
     arr = []
