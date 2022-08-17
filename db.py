@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from passlib.hash import sha256_crypt
 import os
 from defaultavatar import default_avatar
 
@@ -21,8 +22,7 @@ def add_user(username, password, email):
 
 def user_login(username, password):
     user = users_collection.find_one({"_id": username})
-    print(password)
-    if user[username]["password"] == password: return "Login successful!", 200
+    if sha256_crypt.verify(password, user[username]["password"]): return "Login successful!", 200
     else: return "Incorrect password...", 403
 
 def patch_user(username, key, value):

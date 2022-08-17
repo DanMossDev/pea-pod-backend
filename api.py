@@ -1,7 +1,7 @@
 from flask import Flask, request, send_file
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
-import bcrypt
+from passlib.hash import sha256_crypt
 from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs, user_login
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ class User(Resource):
 class UserLogin(Resource):
     def put(self, username):    
         body = request.get_json() 
-        password = bcrypt.hashpw(body['password'].encode(), '')
+        password = sha256_crypt.hash(body['password'])
         email = body['email']
 
         if password == None or email == None: return abort(400, message="Please supply a username and password")
@@ -46,8 +46,7 @@ class UserLogin(Resource):
 
     def post(self, username):
         body = request.get_json()
-        password = bcrypt.hashpw(body['password'].encode(), '')
-
+        password = body['password']
         return user_login(username, password)
 
 class UpdateUser(Resource):
