@@ -2,7 +2,7 @@ from flask import Flask, request, send_file
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
 from passlib.hash import sha256_crypt
-from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs, user_login
+from db import add_user, get_user, patch_user, add_like, get_users, get_matches, add_match, get_likes, get_room_msgs, user_login, delete_match
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -88,8 +88,10 @@ class HandleMatch(Resource):
     def patch(self, username):
         body = request.get_json()
         new_match = body['new_match']
+        rejected = body['rejected']
 
         if new_match == None: return abort(400, message="Please include the match's username")
+        if rejected != None: return delete_match(username, new_match)
         try:
             return add_match(username, new_match)
         except:

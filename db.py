@@ -69,6 +69,9 @@ def add_match(username, new_match):
     users_collection.update_one({"_id": username}, {"$push": {username + ".matches": {"name": new_match, "avatar": match_avatar}}})
     return new_match + " added to " + username + "'s matches", 201
 
+def delete_match(username, new_match):
+    users_collection.update_one({"_id": username}, {"$pull": {username + ".incoming_likes": {"name": new_match}}})
+    return "Match deleted", 200
 
 def get_room_msgs(roomID):
     arr = []
