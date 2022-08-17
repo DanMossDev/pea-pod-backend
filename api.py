@@ -5,7 +5,8 @@ from db import add_user, get_user, patch_user, add_like, get_users, get_matches,
 
 app = Flask(__name__)
 api = Api(app) 
-cors = CORS(app, resorces={r'/d/*': {"origins": '*'}})
+
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 user_signup_args = reqparse.RequestParser()
 user_signup_args_arr = ["password", "email"]
